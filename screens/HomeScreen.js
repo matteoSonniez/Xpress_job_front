@@ -31,11 +31,12 @@ const HomeScreen = ({ navigation }) => {
   const handleRegister = async () => {
     try {
       // On envoie les données au format JSON
-      const response = await fetch('http://192.168.1.39:8000/api/user/register', {
+      const response = await fetch(`${process.env.BACKURL}/api/user/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userForm),
       });
+      
 
       const data = await response.json();
       if (response.ok) {
