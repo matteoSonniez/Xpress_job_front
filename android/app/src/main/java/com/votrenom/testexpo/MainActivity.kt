@@ -1,4 +1,4 @@
-package com.testexpo
+package com.votrenom.testexpo
 
 import android.os.Build
 import android.os.Bundle

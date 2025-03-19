@@ -1,4 +1,4 @@
-package com.testexpo
+package com.votrenom.testexpo
 
 import android.app.Application
 import android.content.res.Configuration
