@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput, Alert, StyleSheet } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = ({ navigation }) => {
 
@@ -21,6 +22,15 @@ const HomeScreen = ({ navigation }) => {
     scopes: ['profile', 'email'],
   });
 
+  const removeToken = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      console.log('Token supprimé avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la suppression du token:', error);
+    }
+  };
+
   const handleChange = (field, value) => {
     setUserForm((prevForm) => ({
       ...prevForm,
@@ -30,7 +40,6 @@ const HomeScreen = ({ navigation }) => {
 
   const handleRegister = async () => {
     try {
-      // On envoie les données au format JSON
       const response = await fetch(`${process.env.BACKURL}/api/user/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -122,8 +131,8 @@ const HomeScreen = ({ navigation }) => {
         <Button title="S'inscrire" onPress={handleRegister} />
       </View>
       <Button
-        title="Profile"
-        onPress={() => navigation.navigate('Profile')}
+        title="remove token"
+        onPress={() => removeToken()}
       />
     </View>
   );
