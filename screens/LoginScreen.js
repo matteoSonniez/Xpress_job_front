@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput, Alert, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 
@@ -36,13 +37,13 @@ const LoginScreen = ({ navigation }) => {
 
       const data = await response.json();
       if (response.ok) {
+        if (data.token) {
+          await AsyncStorage.setItem('token', data.token);
+        }
         Alert.alert('Succès', data.message || 'Inscription réussie.');
         // Réinitialiser le formulaire
         setUserForm({
-          firstName: '',
-          lastName: '',
           email: '',
-          phone: '',
           password: '',
         });
       } else {

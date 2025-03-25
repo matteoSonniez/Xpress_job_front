@@ -92,44 +92,6 @@ const HomeScreen = ({ navigation }) => {
           onPress={handleGoogleSignIn}
         />
       )}
-      <View style={styles.section}>
-        <Text style={styles.title}>Inscription</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Prénom"
-          value={userForm.firstName}
-          onChangeText={(text) => handleChange('firstName', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Nom"
-          value={userForm.lastName}
-          onChangeText={(text) => handleChange('lastName', text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={userForm.email}
-          onChangeText={(text) => handleChange('email', text)}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Téléphone"
-          value={userForm.phone}
-          onChangeText={(text) => handleChange('phone', text)}
-          keyboardType="phone-pad"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Mot de passe"
-          value={userForm.password}
-          onChangeText={(text) => handleChange('password', text)}
-          secureTextEntry
-        />
-        <Button title="S'inscrire" onPress={handleRegister} />
-      </View>
       <Button
         title="remove token"
         onPress={() => removeToken()}

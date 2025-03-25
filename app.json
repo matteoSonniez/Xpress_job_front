@@ -4,10 +4,19 @@
     "slug": "testexpo",
     "version": "1.0.0",
     "ios": {
-      "bundleIdentifier": "com.votrenom.testexpo"
+      "bundleIdentifier": "com.votrenom.testexpo",
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"]
+      }
     },
     "android": {
       "package": "com.votrenom.testexpo"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e635e374-4e21-4008-aba2-b536d160a370"
+      }
     }
   }
 }
