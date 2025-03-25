@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput, Alert, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BACKURL } from '@env';
 
 const RegisterScreen = ({ navigation }) => {
   const [userForm, setUserForm] = useState({
@@ -29,8 +30,11 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const handleRegister = async () => {
+    console.log("testtttttt", BACKURL)
+
     try {
-      const response = await fetch(`${process.env.BACKURL}/api/user/register`, {
+      
+      const response = await fetch(`${BACKURL}/api/user/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userForm),
