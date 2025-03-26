@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform, Button, View, ActivityIndicator } from 'react-native';
+import React, { useEffect, useRef, useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform, Button, View, ActivityIndicator } from "react-native";
 
-import HomeScreen from './screens/HomeScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import LoginScreen from './screens/LoginScreen';
-import AuthScreen from './screens/authScreen';
-import NotifScreen from './screens/notifScreen';
+import HomeScreen from "./screens/HomeScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import LoginScreen from "./screens/LoginScreen";
+import AuthScreen from "./screens/authScreen";
+import NotifScreen from "./screens/notifScreen";
 
-import { createStackNavigator } from '@react-navigation/stack';
-import * as Notifications from 'expo-notifications';
+import { createStackNavigator } from "@react-navigation/stack";
+import * as Notifications from "expo-notifications";
 
 // Configure le comportement des notifications (affichage en avant-plan, etc.)
 Notifications.setNotificationHandler({
@@ -30,24 +30,24 @@ async function requestNotificationPermission() {
   let finalStatus = existingStatus;
 
   // Si aucune permission n'est donnée, demande-la
-  if (existingStatus !== 'granted') {
+  if (existingStatus !== "granted") {
     const { status } = await Notifications.requestPermissionsAsync();
     finalStatus = status;
     console.log("Après demande, status:", finalStatus);
   }
 
-  if (finalStatus !== 'granted') {
-    alert('Permission pour les notifications locales refusée!');
+  if (finalStatus !== "granted") {
+    alert("Permission pour les notifications locales refusée!");
     return;
   }
 
   // Configuration spécifique pour Android (canaux de notification)
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
+      lightColor: "#FF231F7C",
     });
   }
 }
@@ -67,7 +67,7 @@ export default function App() {
     // Vérifie si un token d'authentification est stocké
     const checkUserToken = async () => {
       try {
-        const token = await AsyncStorage.getItem('token');
+        const token = await AsyncStorage.getItem("token");
         console.log("the tokennnnnn", token);
         // Si token existe (et n'est pas une chaîne vide ou null), l'utilisateur est connecté
         if (token) {
@@ -89,19 +89,23 @@ export default function App() {
     requestNotificationPermission();
 
     // Listener pour recevoir les notifications quand l'app est en avant-plan
-    notificationListener.current = Notifications.addNotificationReceivedListener(notif => {
-      setNotification(notif);
-      console.log("Notification reçue en avant-plan:", notif);
-    });
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notif) => {
+        setNotification(notif);
+        console.log("Notification reçue en avant-plan:", notif);
+      });
 
     // Listener pour gérer les réponses aux notifications (quand l'utilisateur clique dessus)
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log("Réponse à la notification:", response);
-    });
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log("Réponse à la notification:", response);
+      });
 
     // Nettoyage des listeners au démontage
     return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
@@ -109,7 +113,7 @@ export default function App() {
   // Tant que la vérification du token est en cours, affichez un indicateur de chargement
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -119,18 +123,40 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isLoggedIn ? (
-          // Si l'utilisateur est connecté, affichez les écrans pour utilisateurs connectés
           <>
-            <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Accueil' }} />
-            <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profil' }} />
-            <Stack.Screen name="Notif" component={NotifScreen} options={{ title: 'Notif' }} />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ title: "Accueil" }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={{ title: "Profil" }}
+            />
+            <Stack.Screen
+              name="Notif"
+              component={NotifScreen}
+              options={{ title: "Notif" }}
+            />
           </>
         ) : (
-          // Sinon, affichez les écrans de connexion et d'inscription
           <>
-            <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Login' }} />
-            <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Register' }} />
-            <Stack.Screen name="Auth" component={AuthScreen} options={{ title: 'Auth' }} />
+            <Stack.Screen name="Login">
+              {(props) => (
+                <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="Register">
+              {(props) => (
+                <RegisterScreen {...props} setIsLoggedIn={setIsLoggedIn} />
+              )}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Auth"
+              component={AuthScreen}
+              options={{ title: "Auth" }}
+            />
           </>
         )}
       </Stack.Navigator>

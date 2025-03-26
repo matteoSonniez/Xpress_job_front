@@ -30,6 +30,14 @@ const HomeScreen = ({ navigation }) => {
       console.error('Erreur lors de la suppression du token:', error);
     }
   };
+  const showToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      console.log('The token', token);
+    } catch (error) {
+      console.error('Erreur lors de la recup du token', error);
+    }
+  };
 
   const handleChange = (field, value) => {
     setUserForm((prevForm) => ({
@@ -95,6 +103,10 @@ const HomeScreen = ({ navigation }) => {
       <Button
         title="remove token"
         onPress={() => removeToken()}
+      />
+      <Button
+        title="show token"
+        onPress={() => showToken()}
       />
     </View>
   );
