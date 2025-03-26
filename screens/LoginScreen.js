@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, setIsLoggedIn }) => {
 
   const [userInfo, setUserInfo] = useState(null);
   
@@ -33,12 +33,13 @@ const LoginScreen = ({ navigation }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userForm),
       });
-      
-
+  
       const data = await response.json();
       if (response.ok) {
         if (data.token) {
           await AsyncStorage.setItem('token', data.token);
+          // Met à jour l'état global de connexion
+          setIsLoggedIn(true);
         }
         Alert.alert('Succès', data.message || 'Inscription réussie.');
         // Réinitialiser le formulaire
@@ -54,6 +55,7 @@ const LoginScreen = ({ navigation }) => {
       Alert.alert('Erreur', error.message);
     }
   };
+  
 
   // Gère la réponse du flux OAuth
   useEffect(() => {
@@ -67,7 +69,6 @@ const LoginScreen = ({ navigation }) => {
   const handleGoogleSignIn = async () => {
     await promptAsync();
   };
-
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -97,7 +98,7 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={(text) => handleChange('password', text)}
           secureTextEntry
         />
-        <Button title="se connecter" onPress={handleLogin} />
+        <Button title="Se connecter" onPress={handleLogin} />
       </View>
       <Button
         title="Register"
@@ -110,25 +111,25 @@ const LoginScreen = ({ navigation }) => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-    section: {
-      marginTop: 20,
-      width: '90%',
-      padding: 10,
-      backgroundColor: '#f2f2f2',
-      borderRadius: 8,
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginBottom: 10,
-      textAlign: 'center',
-    },
-    input: {
-      height: 40,
-      borderColor: '#ccc',
-      borderWidth: 1,
-      paddingHorizontal: 8,
-      marginBottom: 10,
-      borderRadius: 4,
-    },
-  });
+  section: {
+    marginTop: 20,
+    width: '90%',
+    padding: 10,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 8,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    paddingHorizontal: 8,
+    marginBottom: 10,
+    borderRadius: 4,
+  },
+});

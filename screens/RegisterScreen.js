@@ -3,7 +3,7 @@ import { View, Text, Button, TextInput, Alert, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BACKURL } from '@env';
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation, setIsLoggedIn }) => {
   const [userForm, setUserForm] = useState({
     firstName: '',
     lastName: '',
@@ -45,6 +45,7 @@ const RegisterScreen = ({ navigation }) => {
         // Stocker le token dans AsyncStorage
         if (data.token) {
           await AsyncStorage.setItem('token', data.token);
+          setIsLoggedIn(true);
         }
         Alert.alert('Succès', data.message || 'Inscription réussie.');
         // Réinitialiser le formulaire
