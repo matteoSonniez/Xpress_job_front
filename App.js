@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Platform, Button, View, ActivityIndicator } from "react-native";
+import { Platform, View, ActivityIndicator } from "react-native";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 import HomeScreen from "./screens/HomeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -9,6 +10,8 @@ import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import AuthScreen from "./screens/authScreen";
 import NotifScreen from "./screens/notifScreen";
+import StripeScreen from "./screens/StripeScreen";
+import AbonnementScreen from "./screens/AbonnementScreen";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Notifications from "expo-notifications";
@@ -120,46 +123,58 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isLoggedIn ? (
-          <>
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{ title: "Accueil" }}
-            />
-            <Stack.Screen
-              name="Profile"
-              component={ProfileScreen}
-              options={{ title: "Profil" }}
-            />
-            <Stack.Screen
-              name="Notif"
-              component={NotifScreen}
-              options={{ title: "Notif" }}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Login">
-              {(props) => (
-                <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />
-              )}
-            </Stack.Screen>
-            <Stack.Screen name="Register">
-              {(props) => (
-                <RegisterScreen {...props} setIsLoggedIn={setIsLoggedIn} />
-              )}
-            </Stack.Screen>
-            <Stack.Screen
-              name="Auth"
-              component={AuthScreen}
-              options={{ title: "Auth" }}
-            />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <StripeProvider publishableKey="pk_test_51R7D6gCZA9KIcchBEMQt0tA4XJ0GX2pjVs40Y0rtjzdGpZietlmry8bAzc1WtZXtL0XG94gz1aes3FaGbNb4d15q00YYqenHjH">
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {isLoggedIn ? (
+            <>
+              <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{ title: "Accueil" }}
+              />
+              <Stack.Screen
+                name="Profile"
+                component={ProfileScreen}
+                options={{ title: "Profil" }}
+              />
+              <Stack.Screen
+                name="Notif"
+                component={NotifScreen}
+                options={{ title: "Notif" }}
+              />
+              <Stack.Screen
+                name="Stripe"
+                component={StripeScreen}
+                options={{ title: "Stripe" }}
+              />
+              <Stack.Screen
+                name="Abonnement"
+                component={AbonnementScreen}
+                options={{ title: "Abonnement" }}
+              />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Login">
+                {(props) => (
+                  <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="Register">
+                {(props) => (
+                  <RegisterScreen {...props} setIsLoggedIn={setIsLoggedIn} />
+                )}
+              </Stack.Screen>
+              <Stack.Screen
+                name="Auth"
+                component={AuthScreen}
+                options={{ title: "Auth" }}
+              />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </StripeProvider>
   );
 }

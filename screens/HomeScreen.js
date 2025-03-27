@@ -108,6 +108,18 @@ const HomeScreen = ({ navigation }) => {
         title="show token"
         onPress={() => showToken()}
       />
+      <Button
+        title="Notif"
+        onPress={() => navigation.navigate('Notif')}
+      />
+      <Button
+        title="payer"
+        onPress={() => navigation.navigate('Stripe')}
+      />
+      <Button
+        title="Abonnement"
+        onPress={() => navigation.navigate('Abonnement')}
+      />
     </View>
   );
 };
