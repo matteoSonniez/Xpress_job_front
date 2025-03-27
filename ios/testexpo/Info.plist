@@ -27,13 +27,8 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
+          <string>testexpo</string>
           <string>com.votrenom.testexpo</string>
-        </array>
-      </dict>
-      <dict>
-        <key>CFBundleURLSchemes</key>
-        <array>
-          <string>exp+testexpo</string>
         </array>
       </dict>
     </array>
