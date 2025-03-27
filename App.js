@@ -14,46 +14,46 @@ import StripeScreen from "./screens/StripeScreen";
 import AbonnementScreen from "./screens/AbonnementScreen";
 
 import { createStackNavigator } from "@react-navigation/stack";
-import * as Notifications from "expo-notifications";
+//import * as Notifications from "expo-notifications";
 
 // Configure le comportement des notifications (affichage en avant-plan, etc.)
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: false,
+//     shouldSetBadge: false,
+//   }),
+// });
 
-// Fonction pour demander la permission de notification (locales uniquement)
-async function requestNotificationPermission() {
-  console.log("Demande de permission pour les notifications locales...");
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  console.log("existingStatus:", existingStatus);
-  let finalStatus = existingStatus;
+// // Fonction pour demander la permission de notification (locales uniquement)
+// async function requestNotificationPermission() {
+//   console.log("Demande de permission pour les notifications locales...");
+//   const { status: existingStatus } = await Notifications.getPermissionsAsync();
+//   console.log("existingStatus:", existingStatus);
+//   let finalStatus = existingStatus;
 
-  // Si aucune permission n'est donnée, demande-la
-  if (existingStatus !== "granted") {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
-    console.log("Après demande, status:", finalStatus);
-  }
+//   // Si aucune permission n'est donnée, demande-la
+//   if (existingStatus !== "granted") {
+//     const { status } = await Notifications.requestPermissionsAsync();
+//     finalStatus = status;
+//     console.log("Après demande, status:", finalStatus);
+//   }
 
-  if (finalStatus !== "granted") {
-    alert("Permission pour les notifications locales refusée!");
-    return;
-  }
+//   if (finalStatus !== "granted") {
+//     alert("Permission pour les notifications locales refusée!");
+//     return;
+//   }
 
-  // Configuration spécifique pour Android (canaux de notification)
-  if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
-    });
-  }
-}
+//   // Configuration spécifique pour Android (canaux de notification)
+//   if (Platform.OS === "android") {
+//     Notifications.setNotificationChannelAsync("default", {
+//       name: "default",
+//       importance: Notifications.AndroidImportance.MAX,
+//       vibrationPattern: [0, 250, 250, 250],
+//       lightColor: "#FF231F7C",
+//     });
+//   }
+// }
 
 const Stack = createStackNavigator();
 
@@ -89,28 +89,29 @@ export default function App() {
     checkUserToken();
 
     // Demande la permission pour les notifications locales
-    requestNotificationPermission();
+    
+    //requestNotificationPermission();
 
     // Listener pour recevoir les notifications quand l'app est en avant-plan
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notif) => {
-        setNotification(notif);
-        console.log("Notification reçue en avant-plan:", notif);
-      });
+    // notificationListener.current =
+    //   Notifications.addNotificationReceivedListener((notif) => {
+    //     setNotification(notif);
+    //     console.log("Notification reçue en avant-plan:", notif);
+    //   });
 
-    // Listener pour gérer les réponses aux notifications (quand l'utilisateur clique dessus)
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("Réponse à la notification:", response);
-      });
+    // // Listener pour gérer les réponses aux notifications (quand l'utilisateur clique dessus)
+    // responseListener.current =
+    //   Notifications.addNotificationResponseReceivedListener((response) => {
+    //     console.log("Réponse à la notification:", response);
+    //   });
 
     // Nettoyage des listeners au démontage
-    return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
-      );
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
+    // return () => {
+    //   Notifications.removeNotificationSubscription(
+    //     notificationListener.current
+    //   );
+    //   Notifications.removeNotificationSubscription(responseListener.current);
+    // };
   }, []);
 
   // Tant que la vérification du token est en cours, affichez un indicateur de chargement
